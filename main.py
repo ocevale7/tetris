@@ -2,12 +2,9 @@ import pygame
 import time
 
 from game import Game
-from carres import *
 from math import sqrt
 
 game = Game()
-carre = carre(game,0)
-
 pygame.init()
 
 pygame.display.set_caption("Tetris")
@@ -41,14 +38,7 @@ while running:
     screen.blit(texte,(520,485))
     
     for i in game.all_carres_move:
-        i.rect.y += game.gravity
-
-    for i in range(0,4):
-        carre = -1
-        for y in range(0,4):
-            carre += 1
-            #game.piece_copie[i][game.ensemble_carre[carre][1]] += game.gravity
-        
+        i.rect.y += game.gravity 
 
     game.all_carres_move.draw(screen)
     game.all_carres.draw(screen)
@@ -111,9 +101,14 @@ while running:
                         new_pos_x_min = pos_dep_x
                     if pos_dep_y <= new_pos_y_min:
                         new_pos_y_min = pos_dep_y
-
+                
                 dist_x = sqrt((anc_pos_x_min-new_pos_x_min)**2)
                 dist_y = sqrt((anc_pos_y_min-new_pos_y_min)**2)
+
+                print("##########", game.forme_act, "#############", game.pos_act)
+                print(anc_pos_x_min, new_pos_x_min)
+                print(anc_pos_y_min, new_pos_y_min)
+                print(dist_x, dist_y)
 
                 carre = -1
 
@@ -126,10 +121,7 @@ while running:
 
                     i.rect.x = pos_dep_x + dist_x
                     i.rect.y = pos_dep_y + dist_y
-
-
                     
-
             elif event.key == pygame.K_s:
                 game.gravity = game.acc
 

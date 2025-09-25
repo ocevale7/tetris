@@ -1,5 +1,5 @@
 import pygame
-from carres import *
+from formes.carres import *
 from random import randint
 
 class Game():
@@ -38,101 +38,9 @@ class Game():
         self.position = {"x" : 0,
                          "y" : 0}
 
-        self.cube_att = [{ "carre_1_x" : 500,
-                      "carre_1_y" : 180,
+        
 
-                      "carre_2_x" : 540,
-                      "carre_2_y" : 180,
-
-                      "carre_3_x" : 500,
-                      "carre_3_y" : 220,
-
-                      "carre_4_x" : 540,
-                      "carre_4_y" : 220},
-
-                     { "carre_1_x" : 500,
-                      "carre_1_y" : 180,
-
-                      "carre_2_x" : 540,
-                      "carre_2_y" : 180,
-
-                      "carre_3_x" : 500,
-                      "carre_3_y" : 220,
-
-                      "carre_4_x" : 540,
-                      "carre_4_y" : 220},
-
-                     { "carre_1_x" : 500,
-                      "carre_1_y" : 180,
-
-                      "carre_2_x" : 540,
-                      "carre_2_y" : 180,
-
-                      "carre_3_x" : 500,
-                      "carre_3_y" : 220,
-
-                      "carre_4_x" : 540,
-                      "carre_4_y" : 220},
-
-                     { "carre_1_x" : 500,
-                      "carre_1_y" : 180,
-
-                      "carre_2_x" : 540,
-                      "carre_2_y" : 180,
-
-                      "carre_3_x" : 500,
-                      "carre_3_y" : 220,
-
-                      "carre_4_x" : 540,
-                      "carre_4_y" : 220}]
-
-        self.long_att = [{ "carre_1_x" : 460,
-                       "carre_1_y" : 200,
-
-                       "carre_2_x" : 500,
-                       "carre_2_y" : 200,
-
-                       "carre_3_x" : 540,
-                       "carre_3_y" : 200,
-
-                       "carre_4_x" : 580,
-                       "carre_4_y" : 200},
-
-                     { "carre_1_x" : 520,
-                       "carre_1_y" : 140,
-
-                       "carre_2_x" : 520,
-                       "carre_2_y" : 180,
-
-                       "carre_3_x" : 520,
-                       "carre_3_y" : 220,
-
-                       "carre_4_x" : 520,
-                       "carre_4_y" : 260},
-
-                     { "carre_1_x" : 460,
-                       "carre_1_y" : 200,
-
-                       "carre_2_x" : 500,
-                       "carre_2_y" : 200,
-
-                       "carre_3_x" : 540,
-                       "carre_3_y" : 200,
-
-                       "carre_4_x" : 580,
-                       "carre_4_y" : 200},
-
-                     { "carre_1_x" : 520,
-                       "carre_1_y" : 140,
-
-                       "carre_2_x" : 520,
-                       "carre_2_y" : 180,
-
-                       "carre_3_x" : 520,
-                       "carre_3_y" : 220,
-
-                       "carre_4_x" : 520,
-                       "carre_4_y" : 260}]
+        
 
         self.L_d_att = [{ "carre_1_x" : 500,
                     "carre_1_y" : 160,
@@ -374,53 +282,7 @@ class Game():
                         "carre_4_x" : 480,
                         "carre_4_y" : 220}]
 
-        self.cube = [{ "carre_1_x" : 200,
-                      "carre_1_y" : -40,
-
-                      "carre_2_x" : 240,
-                      "carre_2_y" : -40,
-
-                      "carre_3_x" : 200,
-                      "carre_3_y" : 0,
-
-                      "carre_4_x" : 240,
-                      "carre_4_y" : 0},
-
-                     { "carre_1_x" : 200,
-                      "carre_1_y" : -40,
-
-                      "carre_2_x" : 240,
-                      "carre_2_y" : -40,
-
-                      "carre_3_x" : 200,
-                      "carre_3_y" : 0,
-
-                      "carre_4_x" : 240,
-                      "carre_4_y" : 0},
-
-                     { "carre_1_x" : 200,
-                      "carre_1_y" : -40,
-
-                      "carre_2_x" : 240,
-                      "carre_2_y" : -40,
-
-                      "carre_3_x" : 200,
-                      "carre_3_y" : 0,
-
-                      "carre_4_x" : 240,
-                      "carre_4_y" : 0},
-
-                     { "carre_1_x" : 200,
-                      "carre_1_y" : -40,
-
-                      "carre_2_x" : 240,
-                      "carre_2_y" : -40,
-
-                      "carre_3_x" : 200,
-                      "carre_3_y" : 0,
-
-                      "carre_4_x" : 240,
-                      "carre_4_y" : 0}]
+        
 
         
 
@@ -729,16 +591,16 @@ class Game():
                         7 : self.eclair_g_att}
 
     def carres_move_launch(self,couleur):
-        self.all_carres_move.add(carre(self,couleur))
+      self.all_carres_move.add(Carre(self,couleur))
 
     def  carres_launch(self,couleur):
-        self.all_carres.add(carre(self,couleur))
+      self.all_carres.add(Carre(self,couleur))
 
     def  carres_att_launch(self,couleur):
-        self.all_carres_att.add(carre(self,couleur))
+      self.all_carres_att.add(Carre(self,couleur))
 
     def  fond_launch(self,x,y):
-        self.all_fond.add(fond(self,x,y))
+        self.all_fond.add(Fond(self,x,y))
 
     def check_collision_foot(self,group_1,group_2):
 
