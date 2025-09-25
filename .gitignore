@@ -1,0 +1,5 @@
+venv/
+venv./
+pygame
+time
+__pycache__/
