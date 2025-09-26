@@ -9,6 +9,7 @@ class Forme(ABC):
         self.couleur = couleur
         self.carresPygameGroup = pygame.sprite.Group()
         self.listeCarres = []
+        self.orientation = 0
         for carre in listeCarres:
             self.carresPygameGroup.add(carre)
             self.listeCarres.append(carre)

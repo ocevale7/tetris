@@ -105,11 +105,6 @@ while running:
                 dist_x = sqrt((anc_pos_x_min-new_pos_x_min)**2)
                 dist_y = sqrt((anc_pos_y_min-new_pos_y_min)**2)
 
-                print("##########", game.forme_act, "#############", game.pos_act)
-                print(anc_pos_x_min, new_pos_x_min)
-                print(anc_pos_y_min, new_pos_y_min)
-                print(dist_x, dist_y)
-
                 carre = -1
 
                 for i in game.all_carres_move:

@@ -2,9 +2,8 @@ import pygame
 
 class Carre(pygame.sprite.Sprite):
 
-    def __init__(self, game, couleur, x, y):
+    def __init__(self, couleur, x, y):
         super().__init__()
-        self.game = game
 
         self.couleur = couleur
         self.rouge = pygame.image.load('../assets/carre_rouge.png')
@@ -17,7 +16,6 @@ class Carre(pygame.sprite.Sprite):
 
         self.image = self.all_couleurs[self.couleur]
         
-        self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
         self.width = self.image.get_rect()[2]
@@ -28,12 +26,9 @@ class Carre(pygame.sprite.Sprite):
 
 class Fond(pygame.sprite.Sprite):
 
-    def __init__(self,game,x,y):
+    def __init__(self, x, y):
         super().__init__()
-        self.game = game
         self.image = pygame.image.load('../assets/fond.png')
-        self.rect = self.image.get_rect()
-        
         self.rect.x = x
         self.rect.y = y
         self.width = self.image.get_rect()[2]
