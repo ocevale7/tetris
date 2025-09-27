@@ -94,7 +94,7 @@ class Game():
       orientation = randint(0,3)
       couleur = randint(0,4)
       self.piece_en_jeu = self.all_formes[randint(0, 6)](couleur, orientation)
-      self.piece_en_jeu.miseEnJeux()
+      self.piece_en_jeu.miseEnJeux(self)
     
     orientation = randint(0,3)
     couleur = randint(0,4)
@@ -106,16 +106,23 @@ class Game():
     for i in range(40, 840, 40):
       if self.nbCarreParLigne[i] == 10:
         lignesASuppr.append(i)
-        self.nbCarreParLigne[i] = 0
+    
+    self.points += len(lignesASuppr)
     
     for carre in self.all_carres:
       if carre.rect.y in lignesASuppr:
         self.all_carres.remove(carre)
-    print(lignesASuppr)
+
     for carre in self.all_carres:
       for ligneSuppr in lignesASuppr:
         if carre.rect.y < ligneSuppr:
           carre.rect.y += 40
+    
+    for i in range(40, 840, 40):
+      self.nbCarreParLigne[i] = 0
+
+    for carre in self.all_carres:
+      self.nbCarreParLigne[carre.rect.y] += 1
         
               
   def relunch(self):
@@ -128,19 +135,16 @@ class Game():
     if not(bon) or self.check_collision_foot(pygameGroupe,self.all_carres):
       for carre in pygameGroupe:
         carre.rect.y = round(carre.rect.y / 40) * 40
+        print(carre.rect.y)
+        if carre.rect.y <= 0:
+          return True
         self.nbCarreParLigne[carre.rect.y] += 1
         self.all_carres.add(carre)
       self.ligne()
       self.piece_en_jeu = self.piece_en_attente
+      self.piece_en_jeu.miseEnJeux(self)
       self.new_piece()
       self.gravity = self.gravity_init
-
-  def lose(self):
-    for i in self.all_carres:
-      if i.rect.y <= 0:
-        return True
+    
     return False
-              
-
-        
-        
+  

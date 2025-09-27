@@ -38,9 +38,7 @@ while running:
     game.all_carres.draw(screen)
     game.piece_en_attente.draw(screen)
 
-    game.relunch()
-
-    if game.lose():
+    if game.relunch():
         running = False
 
     pygame.display.flip()
@@ -72,14 +70,7 @@ while running:
                     game.piece_en_jeu.move(-40, 0)
 
             elif event.key == pygame.K_z:
-                bon = True
-                l = game.piece_en_jeu.resultsOfTourne()
-                for carre in l:
-                    if carre[0] <= 0 or carre[0] >= 400 or carre[1] >= 840:
-                        bon = False
-                        break
-                if bon:
-                    game.piece_en_jeu.tourne()
+                game.piece_en_jeu.rotate(game)
                     
             elif event.key == pygame.K_s:
                 game.gravity = game.acc

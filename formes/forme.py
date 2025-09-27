@@ -5,19 +5,41 @@ import pygame
 
 class Forme(ABC):
 
-    def __init__(self, couleur, orientation, listeCarres):
+    def __init__(self, couleur, orientation, x, y):
+
         self.couleur = couleur
         self.carresPygameGroup = pygame.sprite.Group()
         self.listeCarres = []
         self.orientation = orientation
 
-        for carre in listeCarres:
-            self.carresPygameGroup.add(carre)
-            self.listeCarres.append(carre)
+        self.x = x
+        self.y = y
 
-        self.miseEnJeux()
+        for _ in range(orientation):
+            self.matrix = [list(row)[::-1] for row in zip(*self.matrix)]
+
+        for i in range(len(self.matrix)):
+            for j in range(len(self.matrix[i])):
+                if self.matrix[i][j] == 1:
+                    newCarre = Carre(self.couleur, x + i*40, y + j*40)
+                    self.carresPygameGroup.add(newCarre)
+                    self.listeCarres.append(newCarre)
+    
+    def placeCarre(self, x, y):
+        carreNb = 0
+        self.x = x
+        self.y = y
+        for i in range(len(self.matrix)):
+            for j in range(len(self.matrix[i])):
+                if self.matrix[i][j] == 1:
+                    carre = self.listeCarres[carreNb]
+                    carreNb += 1
+                    carre.rect.x = x + i*40
+                    carre.rect.y = y + j*40     
 
     def move(self, x, y):
+        self.x += x
+        self.y += y
         for carre in self.carresPygameGroup:
             carre.rect.x += x
             carre.rect.y += y
@@ -25,101 +47,26 @@ class Forme(ABC):
     def draw(self, screen):
         self.carresPygameGroup.draw(screen)
 
-    def centre(self):
-        somme_x = 0
-        somme_y = 0
-        for carre in self.listeCarres:
-            somme_x += carre.rect.x
-            somme_y += carre.rect.y
-        
-        return (int(somme_x / len(self.listeCarres)), int(somme_y / len(self.listeCarres)))
+    def rotate(self, game):
+        print("#######################################")
+        print(self.matrix)
+        ancienneMatrix = self.matrix
+        self.matrix = [list(row)[::-1] for row in zip(*self.matrix)]
+        self.placeCarre(self.x, self.y)
+        print(self.matrix)
+
+        bon = True
+        for carre in game.piece_en_jeu.carresPygameGroup:
+            if carre.rect.x >= 400 or carre.rect.x <= 40:
+                bon = False
+                break
+
+        if not(bon) or game.check_collision_left(game.piece_en_jeu.carresPygameGroup, game.all_carres) or game.check_collision_right(game.piece_en_jeu.carresPygameGroup, game.all_carres) or game.check_collision_foot(game.piece_en_jeu.carresPygameGroup, game.all_carres) :
+            self.matrix = ancienneMatrix
+            self.placeCarre(self.x, self.y)
     
-    def ajustePos(self, x_min_origin, y_min_origin, liste = None):
-
-        if liste is None:
-
-            x_min_new, y_min_new = self.listeCarres[0].rect.x, self.listeCarres[0].rect.y
-
-            for carre in self.listeCarres:
-                if carre.rect.x < x_min_new:
-                    x_min_new = carre.rect.x
-                if carre.rect.y < y_min_new:
-                    y_min_new = carre.rect.y
-            
-            x_dist = x_min_new - x_min_origin
-            y_dist = y_min_new - y_min_origin
-
-            for carre in self.listeCarres:
-                carre.rect.x -= x_dist
-                carre.rect.y -= y_dist
-        else:
-
-            x_min_new, y_min_new = liste[0][0], liste[0][1]
-
-            for carre in liste:
-                if carre[0] < x_min_new:
-                    x_min_new = carre[0]
-                if carre[1] < y_min_new:
-                    y_min_new = carre[1]
-            
-            x_dist = x_min_new - x_min_origin
-            y_dist = y_min_new - y_min_origin
-
-            for i in range(len(liste)):
-                liste[i] = (liste[i][0] - x_dist, liste[i][1] - y_dist)
-
-    def tourne(self):
-
-        x_min_origin, y_min_origin = self.listeCarres[0].rect.x, self.listeCarres[0].rect.y
-
-        for carre in self.listeCarres:
-            if carre.rect.x < x_min_origin:
-                x_min_origin = carre.rect.x
-            if carre.rect.y < y_min_origin:
-                y_min_origin = carre.rect.y
-
-        cx, cy = self.centre()
-        for carre in self.listeCarres:
-            dx, dy = carre.rect.x - cx, carre.rect.y - cy
-            dx_rot, dy_rot = -dy, dx
-            carre.rect.x, carre.rect.y = dx_rot + cx, dy_rot + cy
-        
-        self.ajustePos(x_min_origin, y_min_origin)
-
-    def resultsOfTourne(self):
-
-        x_min_origin, y_min_origin = self.listeCarres[0].rect.x, self.listeCarres[0].rect.y
-
-        for carre in self.listeCarres:
-            if carre.rect.x < x_min_origin:
-                x_min_origin = carre.rect.x
-            if carre.rect.y < y_min_origin:
-                y_min_origin = carre.rect.y
-
-        l = []
-        cx, cy = self.centre()
-
-        for carre in self.listeCarres:
-            dx, dy = carre.rect.x - cx, carre.rect.y - cy
-            dx_rot, dy_rot = -dy, dx
-            l.append((dx_rot + cx, dy_rot + cy))
-        self.ajustePos(x_min_origin, y_min_origin, l)
-
-        return l
-    
-    def miseEnJeux(self):
-
-        for _ in range(self.orientation):
-            self.tourne()
-        
-        y_max = self.listeCarres[0].rect.y
-
-        for carre in self.listeCarres:
-            if carre.rect.y > y_max:
-                y_max = carre.rect.y
-        
-        for carre in self.listeCarres:
-            carre.rect.y -= y_max
+    def miseEnJeux(self, game):
+        self.placeCarre(200, -80)
     
     def __str__(self):
         output = "Forme num " + str(self.num) + "\n"
