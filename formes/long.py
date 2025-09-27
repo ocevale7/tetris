@@ -1,5 +1,5 @@
-from carres import Carre
-from forme import Forme
+from .carres import Carre
+from .forme import Forme
 
 class Long(Forme):
 
@@ -27,5 +27,4 @@ class Long(Forme):
         self.listeCarres[3].rect.x = 280
         self.listeCarres[3].rect.y = 0
 
-        for _ in range self.orientation:
-            self.tourne()
+        super().miseEnJeux()

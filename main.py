@@ -2,7 +2,6 @@ import pygame
 import time
 
 from game import Game
-from math import sqrt
 
 game = Game()
 pygame.init()
@@ -21,9 +20,6 @@ pygame.mixer.music.play()
 
 game.new_piece()
 
-for i in range(40,440,40):
-    game.fond_launch(i,840)
-
 while running:
 
     if pygame.mixer.music.get_pos() > 103000:
@@ -32,17 +28,15 @@ while running:
                 pygame.mixer.music.play()
 
     screen.blit(background,(0,0))
-    game.all_fond.draw(screen)
 
     texte = font.render(str(game.points),1,(0,0,0))
     screen.blit(texte,(520,485))
     
-    for i in game.all_carres_move:
-        i.rect.y += game.gravity 
+    game.piece_en_jeu.move(0, game.gravity)
 
-    game.all_carres_move.draw(screen)
+    game.piece_en_jeu.draw(screen)
     game.all_carres.draw(screen)
-    game.all_carres_att.draw(screen)
+    game.piece_en_attente.draw(screen)
 
     game.relunch()
 
@@ -61,61 +55,31 @@ while running:
                 pygame.quit()
             elif event.key == pygame.K_d:
                 bon = True
-                for i in game.all_carres_move:
-                    if i.rect.x >= 400 or game.check_collision_right(game.all_carres_move,game.all_carres):
+                for carre in game.piece_en_jeu.carresPygameGroup:
+                    if carre.rect.x >= 400:
                         bon = False
-                if bon:
-                    for i in game.all_carres_move:
-                        i.rect.x += 40
+                        break
+                if bon and not(game.check_collision_right(game.piece_en_jeu.carresPygameGroup, game.all_carres)):
+                    game.piece_en_jeu.move(40, 0)
                         
             elif event.key == pygame.K_q:
                 bon = True
-                for i in game.all_carres_move:
-                    if i.rect.x <= 40 or game.check_collision_left(game.all_carres_move,game.all_carres):
+                for carre in game.piece_en_jeu.carresPygameGroup:
+                    if carre.rect.x <= 40:
                         bon = False
-                if bon:
-                    for i in game.all_carres_move:
-                        i.rect.x -= 40
+                        break
+                if bon and not(game.check_collision_left(game.piece_en_jeu.carresPygameGroup, game.all_carres)):
+                    game.piece_en_jeu.move(-40, 0)
 
             elif event.key == pygame.K_z:
-
-                game.pos_act = (game.pos_act + 1) % 4
-
-                anc_pos_x_min = 640
-                anc_pos_y_min = 880
-
-                new_pos_x_min = 640
-                new_pos_y_min = 880
-
-                for i in game.all_carres_move:
-                    if i.rect.x <= anc_pos_x_min:
-                        anc_pos_x_min = i.rect.x
-                    if i.rect.y <= anc_pos_y_min:
-                        anc_pos_y_min = i.rect.y
-                
-                for carre in range(4):
-                    pos_dep_x = game.Dico_pieces[game.forme_act][game.pos_act][game.ensemble_carre[carre][0]]
-                    pos_dep_y = game.Dico_pieces[game.forme_act][game.pos_act][game.ensemble_carre[carre][1]]
-
-                    if pos_dep_x <= new_pos_x_min:
-                        new_pos_x_min = pos_dep_x
-                    if pos_dep_y <= new_pos_y_min:
-                        new_pos_y_min = pos_dep_y
-                
-                dist_x = sqrt((anc_pos_x_min-new_pos_x_min)**2)
-                dist_y = sqrt((anc_pos_y_min-new_pos_y_min)**2)
-
-                carre = -1
-
-                for i in game.all_carres_move:
-
-                    carre += 1
-
-                    pos_dep_x = game.Dico_pieces[game.forme_act][game.pos_act][game.ensemble_carre[carre][0]]
-                    pos_dep_y = game.Dico_pieces[game.forme_act][game.pos_act][game.ensemble_carre[carre][1]]
-
-                    i.rect.x = pos_dep_x + dist_x
-                    i.rect.y = pos_dep_y + dist_y
+                bon = True
+                l = game.piece_en_jeu.resultsOfTourne()
+                for carre in l:
+                    if carre[0] <= 0 or carre[0] >= 400 or carre[1] >= 840:
+                        bon = False
+                        break
+                if bon:
+                    game.piece_en_jeu.tourne()
                     
             elif event.key == pygame.K_s:
                 game.gravity = game.acc
