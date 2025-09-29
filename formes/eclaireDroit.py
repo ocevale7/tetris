@@ -13,4 +13,4 @@ class EclaireDroit(Forme):
             [0, 0, 1]
         ]
 
-        super().__init__(couleur, orientation, 460, 160)
+        super().__init__(couleur, orientation)

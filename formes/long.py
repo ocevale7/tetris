@@ -14,5 +14,5 @@ class Long(Forme):
             [0, 0, 0, 0]
         ]
         
-        super().__init__(couleur, orientation, 460, 200)
+        super().__init__(couleur, orientation)
 

@@ -13,4 +13,4 @@ class LDroite(Forme):
             [0, 1, 1]
         ]
 
-        super().__init__(couleur, orientation, 500, 160)
+        super().__init__(couleur, orientation)

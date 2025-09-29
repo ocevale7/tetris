@@ -13,4 +13,4 @@ class LGauche(Forme):
             [1, 1, 0]
         ]
 
-        super().__init__(couleur, orientation, 500, 160)
+        super().__init__(couleur, orientation)

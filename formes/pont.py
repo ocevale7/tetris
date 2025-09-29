@@ -13,4 +13,4 @@ class Pont(Forme):
             [0, 0, 0]
         ]
 
-        super().__init__(couleur, orientation, 480, 180)
+        super().__init__(couleur, orientation)

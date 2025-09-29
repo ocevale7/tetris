@@ -12,4 +12,4 @@ class Cube(Forme):
             [1, 1]
         ]
 
-        super().__init__(couleur, orientation, 500, 180)
+        super().__init__(couleur, orientation)

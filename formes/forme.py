@@ -5,25 +5,28 @@ import pygame
 
 class Forme(ABC):
 
-    def __init__(self, couleur, orientation, x, y):
+    depart = (460, 140)
+
+    def __init__(self, couleur, orientation):
 
         self.couleur = couleur
         self.carresPygameGroup = pygame.sprite.Group()
         self.listeCarres = []
         self.orientation = orientation
 
-        self.x = x
-        self.y = y
+        self.x = self.depart[0]
+        self.y = self.depart[1]
 
         for _ in range(orientation):
-            self.matrix = [list(row)[::-1] for row in zip(*self.matrix)]
+            self.matrix = [list(row) for row in zip(*self.matrix)][::-1]
 
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
                 if self.matrix[i][j] == 1:
-                    newCarre = Carre(self.couleur, x + i*40, y + j*40)
+                    newCarre = Carre(self.couleur, self.x + i*40, self.y + j*40)
                     self.carresPygameGroup.add(newCarre)
                     self.listeCarres.append(newCarre)
+        
     
     def placeCarre(self, x, y):
         carreNb = 0
@@ -48,12 +51,10 @@ class Forme(ABC):
         self.carresPygameGroup.draw(screen)
 
     def rotate(self, game):
-        print("#######################################")
-        print(self.matrix)
+
         ancienneMatrix = self.matrix
-        self.matrix = [list(row)[::-1] for row in zip(*self.matrix)]
+        self.matrix = [list(row) for row in zip(*self.matrix)][::-1]
         self.placeCarre(self.x, self.y)
-        print(self.matrix)
 
         bon = True
         for carre in game.piece_en_jeu.carresPygameGroup:

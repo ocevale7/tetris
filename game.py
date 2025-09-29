@@ -135,7 +135,6 @@ class Game():
     if not(bon) or self.check_collision_foot(pygameGroupe,self.all_carres):
       for carre in pygameGroupe:
         carre.rect.y = round(carre.rect.y / 40) * 40
-        print(carre.rect.y)
         if carre.rect.y <= 0:
           return True
         self.nbCarreParLigne[carre.rect.y] += 1
